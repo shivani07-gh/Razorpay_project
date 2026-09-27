@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app.core.database import engine
 from app.models.base import Base
 from app.models.payment import Payment
+from app.models.payment_event import PaymentEvent
 
 app = FastAPI(
     title="RazorGaurd API",
