@@ -21,8 +21,22 @@ def detect_inconsistency(
 
     if razorpay_state == PaymentState.CAPTURED and fulfillment_status != "STARTED":
         inconsistencies.append("CAPTURED_BUT_FULFILLMENT_NOT_STARTED")
+        
+    if not inconsistencies:
+         severity = "NONE"
+    elif any(
+                item in inconsistencies
+                for item in [
+            "RAZORPAY_MERCHANT_MISMATCH",
+            "CAPTURED_BUT_ORDER_NOT_PAID",
+        ]
+        ):
+            severity = "CRITICAL"
+    else:
+        severity = "HIGH"
 
     return {
         "is_inconsistent": len(inconsistencies) > 0,
+        "severity": severity,
         "inconsistencies": inconsistencies,
     }
